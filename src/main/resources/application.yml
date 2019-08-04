@@ -1,0 +1,52 @@
+#服务器配置
+server:
+  port: 8090
+#spring配置
+spring:
+  #数据源配置(默认数据源为HikariDataSource)
+  datasource:
+    #配置mysql数据库
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password:
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/ 
+   #配置JSP视图
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  redis:
+    timeout: 6000
+    password:        
+    cluster:
+      max-redirects: 3  # 获取失败 最大重定向次数                     
+      nodes: 
+      - 127.0.0.1:6380
+      - 127.0.0.1:6381
+      - 127.0.0.1:6382
+      - 127.0.0.1:6383
+      - 127.0.0.1:6384
+      - 127.0.0.1:6385    
+    lettuce:
+      pool:
+        max-active: 1000  #连接池最大连接数（使用负值表示没有限制）
+        max-idle: 10   # 连接池中的最大空闲连接
+        min-idle: 5   # 连接池中的最小空闲连接
+        max-wait: -1   # 连接池最大阻塞等待时间（使用负值表示没有限制）
+  session:
+    store-type: redis  #指定redis实现spring session
+    timeout: 6000  # Session 过期时间，单位s
+    redis:      
+      namespace:     # 用于存储会话的键的命名空间                            
+#配置mybatis框架
+mybatis:
+  #定义Mapper接口映射文件位置 
+  mapper-locations: classpath:mapper/*.xml
+  #定义实体类位置
+  type-aliases-package: com.ssm.pojo
+#控制台打印sql语句
+logging:
+  level:
+    com.ming.ssm.mapper: debug
